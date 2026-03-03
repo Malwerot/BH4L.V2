@@ -302,7 +302,7 @@ local TargetLimb = Target:CreateDropdown({
 })
 
 ----------------------------------------------------------------
--- [ ABA: THEMES ]
+-- [ ABA: THEMES - CORRIGIDA ]
 ----------------------------------------------------------------
 Themes:CreateDropdown({
     Name = "Current Theme",
@@ -311,8 +311,15 @@ Themes:CreateDropdown({
     MultipleOptions = false,
     Flag = "CurrentTheme",
     Callback = function(Options)
-        -- Aqui estava Window.ModifyTheme, o correto é com dois pontos (:)
-        Window:ModifyTheme(Options)
+        -- 'Options' é uma tabela, pegamos o primeiro item 'Options[1]'
+        -- Usamos Rayfield:ModifyTheme para aplicar globalmente
+        local success, err = pcall(function()
+            Rayfield:ModifyTheme(Options[1])
+        end)
+        
+        if not success then
+            warn("Erro ao mudar tema: " .. tostring(err))
+        end
     end,
 })
 
