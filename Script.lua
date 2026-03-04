@@ -311,8 +311,8 @@ Themes:CreateDropdown({
     MultipleOptions = false,
     Flag = "CurrentTheme",
     Callback = function(Options)
-        -- Aqui estava Window.ModifyTheme, o correto é com dois pontos (:)
-        Window:ModifyTheme(Options)
+    local selectedTheme = type(Options) == "table" and Options[1] or Options
+    Window:ModifyTheme(selectedTheme)
     end,
 })
 
