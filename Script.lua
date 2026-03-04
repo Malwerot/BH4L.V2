@@ -200,17 +200,24 @@ AutoTab:CreateToggle({
     Callback = function(Value)
         countingActive = Value
         
-        -- Inicia uma thread separada para não travar a UI
         task.spawn(function()
             while countingActive do
-                local s = countItems("Sugar Block Bag")
-                local w = countItems("Water")
-                local g = countItems("Gelatin")
-                local total = math.min(s, w, g)
+                -- Pcall evita que o erro pare o script e suje o log
+                pcall(function()
+                    local s = countItems("Sugar Block Bag")
+                    local w = countItems("Water")
+                    local g = countItems("Gelatin")
+                    
+                    -- Proteção básica: se os itens forem nil, o total é 0
+                    local total = math.min(s or 0, w or 0, g or 0)
+                    
+                    -- Verifica se o MarshLabel ainda existe antes de setar
+                    if MarshLabel and MarshLabel.Set then
+                        MarshLabel:Set("🍡 Marshmallows possíveis: " .. tostring(total))
+                    end
+                end)
                 
-                MarshLabel:Set("🍡 Marshmallows possíveis: " .. tostring(total))
-                
-                task.wait(1) -- Atualiza a cada 1 segundo para evitar lag
+                task.wait(2) -- Aumentei para 2 segundos para dar fôlego ao CoreGui
             end
         end)
     end,
