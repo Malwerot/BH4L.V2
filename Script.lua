@@ -134,7 +134,7 @@ local Messages = {
 local ChosenMessage = Messages[math.random(1, #Messages)]
 
 local Window = Rayfield:CreateWindow({
-    Name = "AXIOS | BH4L-V2",
+    Name = "AXIOS",
     Icon = 107904589783906,
     LoadingTitle = "AXIOS",
     LoadingSubtitle = ChosenMessage,
@@ -311,15 +311,8 @@ Themes:CreateDropdown({
     MultipleOptions = false,
     Flag = "CurrentTheme",
     Callback = function(Options)
-        -- Extrai a string caso o Rayfield envie o valor dentro de uma tabela
-        local selectedTheme = type(Options) == "table" and Options[1] or Options
-        
-        -- AQUI ESTÁ A CORREÇÃO: Usar 'Rayfield:' em vez de 'Window:'
-        if Rayfield and type(Rayfield.ModifyTheme) == "function" then
-            Rayfield:ModifyTheme(selectedTheme)
-        else
-            warn("A função ModifyTheme não foi encontrada na biblioteca Rayfield.")
-        end
+        -- Aqui estava Window.ModifyTheme, o correto é com dois pontos (:)
+        Window:ModifyTheme(Options)
     end,
 })
 
