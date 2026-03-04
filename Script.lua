@@ -311,8 +311,15 @@ Themes:CreateDropdown({
     MultipleOptions = false,
     Flag = "CurrentTheme",
     Callback = function(Options)
-    local selectedTheme = type(Options) == "table" and Options[1] or Options
-    Window:ModifyTheme(selectedTheme)
+        -- Extrai a string caso o Rayfield envie o valor dentro de uma tabela
+        local selectedTheme = type(Options) == "table" and Options[1] or Options
+        
+        -- AQUI ESTÁ A CORREÇÃO: Usar 'Rayfield:' em vez de 'Window:'
+        if Rayfield and type(Rayfield.ModifyTheme) == "function" then
+            Rayfield:ModifyTheme(selectedTheme)
+        else
+            warn("A função ModifyTheme não foi encontrada na biblioteca Rayfield.")
+        end
     end,
 })
 
