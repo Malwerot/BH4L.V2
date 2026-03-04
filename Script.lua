@@ -6,8 +6,8 @@ local LocalPlayer = Players.LocalPlayer
 ----------------------------------------------------------------
 -- [ CARREGAMENTO DE BIBLIOTECAS ]
 ----------------------------------------------------------------
-getgenv().le = getgenv().le or loadstring(game:HttpGet('https://raw.githubusercontent.com/AAPVdev/scripts/refs/heads/main/LimbExtender.lua'))()
-local LimbExtender = getgenv().le
+-- getgenv().le = getgenv().le or loadstring(game:HttpGet('https://raw.githubusercontent.com/AAPVdev/scripts/refs/heads/main/LimbExtender.lua'))()
+-- local LimbExtender = getgenv().le
 
 local le = LimbExtender({
     LISTEN_FOR_INPUT = false,
@@ -326,7 +326,7 @@ Themes:CreateDropdown({
 ----------------------------------------------------------------
 -- [ ABA: SENSE (ESP) ]
 ----------------------------------------------------------------
-local Sense = loadstring(game:HttpGet('https://sirius.menu/sense'))()
+-- local Sense = loadstring(game:HttpGet('https://sirius.menu/sense'))()
 Sense.teamSettings.enemy.enabled = true
 Sense.teamSettings.friendly.enabled = true
 
