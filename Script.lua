@@ -70,8 +70,9 @@ local function pressE()
             Workspace.Map.Locations.Apartments:FindFirstChild("Home 3"),
             Workspace.Map.Locations.Apartments:FindFirstChild("Home 4")
         }
-        for _, loc in ipairs(locations) do
-            if loc then
+        -- Usando pairs para evitar que pare se encontrar um nil no meio do caminho
+        for _, loc in pairs(locations) do
+            if type(loc) == "userdata" then
                 for _, child in ipairs(loc:GetChildren()) do
                     if child.Name == "Cooking Pot" then
                         local att = child:FindFirstChild("Attachment")
@@ -242,7 +243,7 @@ local function createOption(params)
         Increment = params.increment,
         Callback = function(Value)
             if params.multipleOptions == false and type(Value) == "table" then
-                Value = Value
+                Value = Value[1] or Value
             end
             le:Set(params.flag, Value)
         end,
@@ -293,11 +294,11 @@ Settings:CreateKeybind({
 local TargetLimb = Target:CreateDropdown({
     Name = "Target Limb",
     Options = {},
-    CurrentOption = { le:Get("TARGET_LIMB") },
+    CurrentOption = { le:Get("TARGET_LIMB") or "Head" },
     MultipleOptions = false,
     Flag = "TARGET_LIMB",
     Callback = function(Options)
-        le:Set("TARGET_LIMB", Options)
+        le:Set("TARGET_LIMB", type(Options) == "table" and Options[1] or Options)
     end,
 })
 
@@ -307,12 +308,11 @@ local TargetLimb = Target:CreateDropdown({
 Themes:CreateDropdown({
     Name = "Current Theme",
     Options = {"Default", "AmberGlow", "Amethyst", "Bloom", "DarkBlue", "Green", "Light", "Ocean", "Serenity"},
-    CurrentOption = "Default",
+    CurrentOption = {"Default"},
     MultipleOptions = false,
     Flag = "CurrentTheme",
     Callback = function(Options)
-        -- Aqui estava Window.ModifyTheme, o correto é com dois pontos (:)
-        Window:ModifyTheme(Options[1])
+        Window:ModifyTheme(type(Options) == "table" and Options[1] or Options)
     end,
 })
 
@@ -371,9 +371,26 @@ local function createControl(def)
     elseif def.type == "color" then
         return Tab:CreateColorPicker({ Name = def.name, Color = def.color or Color3.fromRGB(255,255,255), Flag = def.flag or "", Callback = controlCallback })
     elseif def.type == "dropdown" then
-        return Tab:CreateDropdown({ Name = def.name, Options = def.options or {}, CurrentOption = def.current, Flag = def.flag or "", Callback = controlCallback })
+        return Tab:CreateDropdown({ 
+            Name = def.name, 
+            Options = def.options or {}, 
+            CurrentOption = {def.current}, 
+            Flag = def.flag or "", 
+            Callback = function(v)
+                local val = type(v) == "table" and v[1] or v
+                controlCallback(val)
+            end 
+        })
     elseif def.type == "slider" then
-        return Tab:CreateSlider({ Name = def.name, Range = def.range or {0,100}, CurrentValue = (def.default ~= nil and def.default) or ((def.range and def.range) or 0), Increment = def.increment or 1, Suffix = def.suffix or "", Flag = def.flag or "", Callback = controlCallback })
+        return Tab:CreateSlider({ 
+            Name = def.name, 
+            Range = def.range or {0,100}, 
+            CurrentValue = def.default or (def.range and def.range[1]) or 0, 
+            Increment = def.increment or 1, 
+            Suffix = def.suffix or "", 
+            Flag = def.flag or "", 
+            Callback = controlCallback 
+        })
     end
 end
 
@@ -417,7 +434,7 @@ local ui = {
     { type = "section", name = "Tracer" },
     toggle("Enabled", "Tracers", "tracer", false),
     toggle("Outline", "TracersOutlined", "tracerOutline", true),
-    { type = "dropdown", name = "Origin", flag = "TracerOrigin", options = {"Bottom","Top","Mouse"}, current = "Bottom", onChange = function(v) setBoth("tracerOrigin", v) end },
+    { type = "dropdown", name = "Origin", flag = "TracerOrigin", options = {"Bottom","Top","Mouse"}, current = "Bottom", onChange = function(v) setBoth("tracerOrigin", type(v) == "table" and v[1] or v) end },
 
     { type = "section", name = "Tag" },
     toggle("Name", "Names", "name", false),
@@ -425,7 +442,7 @@ local ui = {
     toggle("Distance", "Distances", "distance", false),
     toggle("Distance Outlined", "DistancesOutlined", "distanceOutline", true),
     toggle("Health", "Health", "healthText", false),
-    toggle("Health Outlined", "HealthsOutlined", "healthOutline", true),
+    toggle("Health Outlined", "HealthsOutlined", "healthTextOutline", true), -- Nome corrigido aqui
 
     { type = "section", name = "Chams" },
     toggle("Enabled", "Chams", "chams", false),
