@@ -138,7 +138,7 @@ local Window = Rayfield:CreateWindow({
     Icon = 107904589783906,
     LoadingTitle = "AXIOS",
     LoadingSubtitle = ChosenMessage,
-    Theme = "Ocean",
+    Theme = "Default",
     DisableRayfieldPrompts = true,
     ConfigurationSaving = {
         Enabled = true,
@@ -307,7 +307,7 @@ local TargetLimb = Target:CreateDropdown({
 Themes:CreateDropdown({
     Name = "Current Theme",
     Options = {"Default", "AmberGlow", "Amethyst", "Bloom", "DarkBlue", "Green", "Light", "Ocean", "Serenity"},
-    CurrentOption = {"Default"},
+    CurrentOption = "Default",
     MultipleOptions = false,
     Flag = "CurrentTheme",
     Callback = function(Options)
