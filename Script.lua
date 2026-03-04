@@ -312,7 +312,7 @@ Themes:CreateDropdown({
     Flag = "CurrentTheme",
     Callback = function(Options)
         -- Aqui estava Window.ModifyTheme, o correto é com dois pontos (:)
-        Window:ModifyTheme(Options)
+        Window:ModifyTheme(Options[1])
     end,
 })
 
