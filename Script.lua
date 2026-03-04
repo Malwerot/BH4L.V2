@@ -6,7 +6,7 @@ local LocalPlayer = Players.LocalPlayer
 ----------------------------------------------------------------
 -- [ CARREGAMENTO DE BIBLIOTECAS ]
 ----------------------------------------------------------------
--- getgenv().le = getgenv().le or loadstring(game:HttpGet('https://raw.githubusercontent.com/AAPVdev/scripts/refs/heads/main/LimbExtender.lua'))()
+getgenv().le = getgenv().le or loadstring(game:HttpGet('https://raw.githubusercontent.com/AAPVdev/scripts/refs/heads/main/LimbExtender.lua'))()
 -- local LimbExtender = getgenv().le
 
 local le = LimbExtender({
