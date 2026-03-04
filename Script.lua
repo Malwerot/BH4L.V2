@@ -148,7 +148,7 @@ local Window = Rayfield:CreateWindow({
 })
 
 -- Criando as abas
-local AutoTab = Window:CreateTab("AutoFarm", "dollar-sign")
+local AutoTab = Window:CreateTab("AutoFarm", "badge-dollar-sign")
 local Settings = Window:CreateTab("Limbs", "scale-3d")
 local Tab = Window:CreateTab("Sense", "eye")
 local Target = Window:CreateTab("Target", "crosshair")
@@ -312,7 +312,7 @@ Themes:CreateDropdown({
     Flag = "CurrentTheme",
     Callback = function(Options)
         -- Aqui estava Window.ModifyTheme, o correto é com dois pontos (:)
-        Window.ModifyTheme(Options[1])
+        Window:ModifyTheme(Options[1])
     end,
 })
 
